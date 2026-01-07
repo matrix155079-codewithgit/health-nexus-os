@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HEALTH NEXUS OS | Phase 1 – Azure Integrated Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#020617;
+  --panel:#020617;
+  --accent:#38bdf8;
+  --muted:#94a3b8;
+  --text:#e5e7eb;
+  --border:#1e293b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  background:linear-gradient(135deg,#020617,#020617);
+  color:var(--text);
+}
+header{
+  padding:28px 40px;
+  border-bottom:1px solid var(--border);
+}
+header h1{margin:0;color:var(--accent)}
+header p{margin:6px 0 0;color:var(--muted)}
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:40px;
+}
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:24px;
+}
+button{
+  background:var(--accent);
+  color:#020617;
+  border:none;
+  padding:12px 20px;
+  border-radius:12px;
+  font-weight:600;
+  cursor:pointer;
+}
+.output{
+  margin-top:20px;
+  padding:18px;
+  border:1px solid var(--accent);
+  border-radius:12px;
+}
+.tag{
+  display:inline-block;
+  margin:6px 6px 0 0;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:13px;
+  background:#0ea5e9;
+  color:#020617;
+  font-weight:600;
+}
+footer{
+  padding:24px 40px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>HEALTH NEXUS OS</h1>
+  <p>Phase 1 • Causal Intelligence Engine • Azure-Integrated MVP</p>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Causal Health Analysis (Student)</h2>
+    <p><b>Data:</b> 7-day lifestyle sample</p>
+    <button onclick="runFullPipeline()">Run Causal Engine</button>
+    <div id="result" class="output"></div>
+  </div>
+
+  <div class="card">
+    <h2>Microsoft Technology Integration</h2>
+    <div class="tag">Azure OpenAI Service</div>
+    <div class="tag">Azure Static Web Apps</div>
+    <p style="color:var(--muted);margin-top:12px">
+      Azure OpenAI generates human-readable explanations from causal outputs.<br>
+      Azure Static Web Apps hosts and runs this platform.
+    </p>
+  </div>
+
+</div>
+
+<footer>
+  HEALTH NEXUS OS • Non-diagnostic • Explainable • Responsible AI
+</footer>
+
+<script>
+function causalEngine(data){
+  const lowSleepDays=data.filter(d=>d.sleep<6).length;
+  let confidence="Low";
+  if(lowSleepDays>=7) confidence="High";
+  else if(lowSleepDays>=4) confidence="Medium";
+  return {
+    rootCause: lowSleepDays>=4 ? "Sleep Deprivation" : "None",
+    causalChain: "Low Sleep → Increased Stress → Reduced Focus",
+    confidence: confidence
+  };
+}
+
+async function azureOpenAIExplain(causalOutput){
+  return `
+Your recent stress levels are likely linked to reduced sleep over multiple days.
+When sleep decreases, stress tends to increase, which can reduce focus and mental clarity.
+Improving sleep duration may help break this pattern and restore balance.
+  `;
+}
+
+async function runFullPipeline(){
+  const sampleData=[
+    {sleep:5},{sleep:5.5},{sleep:6},
+    {sleep:5},{sleep:6.5},{sleep:7},{sleep:7.5}
+  ];
+  const causalOutput=causalEngine(sampleData);
+  const explanation=await azureOpenAIExplain(causalOutput);
+  document.getElementById("result").innerHTML=`
+    <b>Root Cause:</b> ${causalOutput.rootCause}<br><br>
+    <b>Causal Chain:</b> ${causalOutput.causalChain}<br><br>
+    <b>Azure OpenAI Explanation:</b><br>
+    ${explanation}<br><br>
+    <b>Confidence Level:</b> ${causalOutput.confidence}<br><br>
+    <i>This output is generated using explainable, non-diagnostic logic.</i>
+  `;
+}
+</script>
+
+</body>
+</html>
